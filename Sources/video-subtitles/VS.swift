@@ -109,4 +109,9 @@ open class VideoSubtitles {
             }
         })
     }
+    
+    open func getPlayerItem() -> AVPlayerItem {
+        let item = AVPlayerItem(asset: asset)
+        return item
+    }
 }
