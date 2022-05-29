@@ -33,15 +33,15 @@ open class VideoSubtitles {
         
     }
     
-    var texts: [(text: String, fontName: String, fontSize: Float)] = []
+    var texts: [(text: String, fontName: String, fontSize: Float, startTime: Float, endTime: Float, x: Float, y: Float)] = []
     
     open func setVideo(videoName: String, extensionName: String) {
         let movieURL = Bundle.main.url(forResource: videoName, withExtension: extensionName)
         asset = AVAsset(url: movieURL!)
     }
     
-    open func insertText(text: String, fontName: String, fontSize: Float){
-        texts.append((text, fontName, fontSize))
+    open func insertText(text: String, fontName: String, fontSize: Float, startTime: Float, endTime: Float, x: Float, y: Float){
+        texts.append((text, fontName, fontSize, startTime, endTime, x, y))
     }
     
     open func compose() -> AVMutableVideoComposition {
@@ -49,24 +49,31 @@ open class VideoSubtitles {
             
             var composited: CIImage = request.sourceImage
             
+            let time = CMTimeGetSeconds(request.compositionTime)
+            
             for t in texts {
-                let attributes = [
-                    NSAttributedString.Key.foregroundColor : Color.blue,
-                    NSAttributedString.Key.font : Font(name: t.fontName, size: CGFloat(t.fontSize))!
-                ]
-                
-                let text = NSAttributedString(string: "test", attributes: attributes)
-                
-                let textFilter = CIFilter.attributedTextImageGenerator()
-                textFilter.text = text
-                textFilter.scaleFactor = 4.0
-                
-                let centerHorizontal = (request.renderSize.width - textFilter.outputImage!.extent.width)/2
-                let moveTextTransform = CGAffineTransform(translationX: centerHorizontal, y: 200)
-                let positionedText = textFilter.outputImage!.transformed(by: moveTextTransform)
-                
-                composited = positionedText.composited(over: composited)
+                if t.startTime < Float(time) && t.endTime > Float(time) {
+                    let attributes = [
+                        NSAttributedString.Key.foregroundColor : Color.blue,
+                        NSAttributedString.Key.font : Font(name: t.fontName, size: CGFloat(t.fontSize))!
+                    ]
+                    
+                    let text = NSAttributedString(string: "test", attributes: attributes)
+                    
+                    let textFilter = CIFilter.attributedTextImageGenerator()
+                    textFilter.text = text
+                    textFilter.scaleFactor = 4.0
+                    
+                    let centerHorizontal = (request.renderSize.width - textFilter.outputImage!.extent.width)/2
+                    let moveTextTransform = CGAffineTransform(translationX: CGFloat(t.x), y: CGFloat(t.y))
+                    let positionedText = textFilter.outputImage!.transformed(by: moveTextTransform)
+                    
+                    composited = positionedText.composited(over: composited)
+                }
             }
+        
+            
+            
             
             
             
