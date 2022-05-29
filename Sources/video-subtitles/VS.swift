@@ -52,7 +52,7 @@ open class VideoSubtitles {
             let time = CMTimeGetSeconds(request.compositionTime)
             
             for t in texts {
-//                if t.startTime < Float(time) && t.endTime > Float(time) {
+                if t.startTime < Float(time) && t.endTime > Float(time) {
                     let attributes = [
                         NSAttributedString.Key.foregroundColor : Color.blue,
                         NSAttributedString.Key.font : Font(name: t.fontName, size: CGFloat(t.fontSize))!
@@ -69,7 +69,7 @@ open class VideoSubtitles {
                     let positionedText = textFilter.outputImage!.transformed(by: moveTextTransform)
                     
                     composited = positionedText.composited(over: composited)
-//                }
+                }
             }
         
             
