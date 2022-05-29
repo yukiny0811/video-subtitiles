@@ -58,7 +58,7 @@ open class VideoSubtitles {
                         NSAttributedString.Key.font : Font(name: t.fontName, size: CGFloat(t.fontSize))!
                     ]
                     
-                    let text = NSAttributedString(string: "test", attributes: attributes)
+                    let text = NSAttributedString(string: t.text, attributes: attributes)
                     
                     let textFilter = CIFilter.attributedTextImageGenerator()
                     textFilter.text = text
