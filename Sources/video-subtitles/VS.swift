@@ -11,17 +11,9 @@ import AVFoundation
 import Photos
 import CoreImage.CIFilterBuiltins
 
-#if canImport(UIKit)
 import UIKit
 private typealias Color = UIColor
 private typealias Font = UIFont
-#endif
-
-#if canImport(AppKit) && !targetEnvironment(macCatalyst)
-import AppKit
-private typealias Color = NSColor
-private typealias Font = NSFont
-#endif
 
 open class VideoSubtitles {
     
