@@ -122,3 +122,4 @@ open class VideoSubtitles {
         return item
     }
 }
+
