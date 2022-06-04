@@ -25,15 +25,19 @@ open class VideoSubtitles {
         
     }
     
-    var texts: [(text: String, fontName: String, fontSize: Float, startTime: Float, endTime: Float, x: Float, y: Float)] = []
+    var texts: [(text: String, fontName: String, fontSize: Float, startTime: Float, endTime: Float, x: Float, y: Float, color: UIColor)] = []
     
     open func setVideo(videoName: String, extensionName: String) {
         let movieURL = Bundle.main.url(forResource: videoName, withExtension: extensionName)
         asset = AVAsset(url: movieURL!)
     }
     
+    open func insertText(text: String, fontName: String, fontSize: Float, startTime: Float, endTime: Float, x: Float, y: Float, color: UIColor){
+        texts.append((text, fontName, fontSize, startTime, endTime, x, y, color))
+    }
+    
     open func insertText(text: String, fontName: String, fontSize: Float, startTime: Float, endTime: Float, x: Float, y: Float){
-        texts.append((text, fontName, fontSize, startTime, endTime, x, y))
+        texts.append((text, fontName, fontSize, startTime, endTime, x, y, UIColor.blue))
     }
     
     open func compose() -> AVMutableVideoComposition {
@@ -46,7 +50,7 @@ open class VideoSubtitles {
             for t in texts {
                 if t.startTime < Float(time) && t.endTime > Float(time) {
                     let attributes = [
-                        NSAttributedString.Key.foregroundColor : Color.blue,
+                        NSAttributedString.Key.foregroundColor : t.color,
                         NSAttributedString.Key.font : Font(name: t.fontName, size: CGFloat(t.fontSize))!
                     ]
                     
