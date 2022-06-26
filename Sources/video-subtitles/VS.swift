@@ -19,7 +19,7 @@ open class VideoSubtitles {
     
     var _assetExport: AVAssetExportSession!
     
-    var asset: AVAsset!
+    open var asset: AVAsset!
     
     public init() {
         
